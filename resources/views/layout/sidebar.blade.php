@@ -40,7 +40,7 @@
                             <p class="mb-0">Admin</p>
                         </div>
                     </div>
-                    <a href="/" class="position-relative" data-bs-toggle="tooltip"
+                    <a href="{{ route('auth.logout') }}" class="position-relative" data-bs-toggle="tooltip"
                         data-bs-placement="top" data-bs-title="Logout">
                         <iconify-icon icon="solar:logout-line-duotone" class="fs-8"></iconify-icon>
                     </a>
