@@ -391,43 +391,10 @@
                                                     Settings</span>
                                             </div>
                                         </a>
-
-                                        <a href="/"
-                                            class="dropdown-item px-7 d-flex align-items-center py-6">
-                                            <span
-                                                class="btn px-3 py-2 bg-success-subtle rounded-1 text-success shadow-none">
-                                                <iconify-icon
-                                                    icon="solar:shield-minimalistic-line-duotone"
-                                                    class="fs-7"></iconify-icon>
-                                            </span>
-                                            <div class="w-75 d-inline-block v-middle ps-3 ms-1">
-                                                <h5 class="mb-0 mt-1 fs-4 fw-normal">My Inbox</h5>
-                                                <span
-                                                    class="fs-3 text-nowrap d-block fw-normal mt-1 text-muted">Messages
-                                                    &
-                                                    Emails</span>
-                                            </div>
-                                        </a>
-
-                                        <a href="/"
-                                            class="dropdown-item px-7 d-flex align-items-center py-6">
-                                            <span
-                                                class="btn px-3 py-2 bg-danger-subtle rounded-1 text-danger shadow-none">
-                                                <iconify-icon icon="solar:card-2-line-duotone"
-                                                    class="fs-7"></iconify-icon>
-                                            </span>
-                                            <div class="w-75 d-inline-block v-middle ps-3 ms-1">
-                                                <h5 class="mb-0 mt-1 fs-4 fw-normal">My Task</h5>
-                                                <span
-                                                    class="fs-3 text-nowrap d-block fw-normal mt-1 text-muted">To-do
-                                                    and Daily
-                                                    Tasks</span>
-                                            </div>
-                                        </a>
                                     </div>
 
                                     <div class="py-6 px-7 mb-1">
-                                        <a href="/"
+                                        <a href="{{ route('auth.logout') }}"
                                             class="btn btn-primary w-100">Log Out</a>
                                     </div>
                                 </div>
@@ -822,7 +789,7 @@
                                     </div>
 
                                     <div class="py-6 px-7 mb-1">
-                                        <a href="/"
+                                        <a href="{{ route('auth.logout') }}"
                                             class="btn btn-primary w-100">Log Out</a>
                                     </div>
                                 </div>
