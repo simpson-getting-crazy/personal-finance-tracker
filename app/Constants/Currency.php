@@ -24,4 +24,11 @@ class Currency
      * @var string
      */
     const JAPANESE_YEN = 'JPY';
+
+    /**
+     * Define the list of currencies
+     *
+     * @var array
+     */
+    const COLLECTS = [self::RUPIAH, self::US_DOLLAR, self::JAPANESE_YEN];
 }

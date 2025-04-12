@@ -20,7 +20,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
 
-                $table->string('name');
+            $table->string('name');
 
             $table->enum('type', ['checking', 'savings', 'credit', 'investment']);
 

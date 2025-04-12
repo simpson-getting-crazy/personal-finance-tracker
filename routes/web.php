@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\Master\AccountController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -10,6 +11,22 @@ Route::group([
     Route::get('/', function () {
         return view('index');
     })->name('dashboard');
+
+    Route::group([
+        'prefix' => 'master',
+        'as' => 'master.',
+    ], function () {
+
+        Route::group([
+            'prefix' => 'account',
+            'as' => 'account.',
+        ], function () {
+            Route::get('/', [AccountController::class, 'index'])->name('index');
+            Route::get('/create', [AccountController::class, 'create'])->name('create');
+            Route::post('/store', [AccountController::class, 'store'])->name('store');
+        });
+
+    });
 });
 
 Route::group([
