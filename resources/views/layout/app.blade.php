@@ -6,6 +6,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon icon-->
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/logos/favicon.png') }}" />
@@ -48,6 +49,8 @@
         </div>
         <div class="dark-transparent sidebartoggler"></div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
     <!-- Import Js Files -->
     <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
@@ -66,6 +69,7 @@
     <script src="{{ asset('assets/js/dashboards/dashboard.js') }}"></script>
 
     <script src="https://rawcdn.githack.com/ferdinalaxewall/beautyToast/v1.0.0b/beautyToast.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         beautyToast.settings({
@@ -117,15 +121,59 @@
         @endif
     </script>
     <script>
-        // Add preloader-active to body to hide scroll
-        document.body.classList.add('preloader-active');
-        window.addEventListener('load', function () {
-            // Hide preloader after page load
-            var preloader = document.querySelector('.preloader');
-            if (preloader) {
-                preloader.style.display = 'none';
-            }
-            document.body.classList.remove('preloader-active');
+        $(document).ready(function() {
+            $('.btn-delete').click(function(e) {
+                e.preventDefault();
+                let $btn = $(this);
+                let href = $btn.attr('href');
+                let redirectUrl = $btn.data('redirect-url');
+
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        if (redirectUrl) {
+                            window.location.href = redirectUrl;
+                        } else {
+                            location.reload();
+                        }
+
+                        $.ajax({
+                            url: href,
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            type: 'POST',
+                            data: { _method: 'DELETE' },
+                            dataType: 'json',
+                            success: function(res) {
+                                $btn.closest('tr').remove();
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Your file has been deleted.",
+                                    icon: "success"
+                                });
+                            },
+                            error: function(res) {
+                                Swal.fire({
+                                    title: "Oops..!",
+                                    text: "Something went wrong",
+                                    icon: "error"
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            }
+                        });
+                    }
+                });
+            });
         });
     </script>
 </body>

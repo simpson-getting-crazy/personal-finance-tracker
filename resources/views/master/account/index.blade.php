@@ -18,7 +18,7 @@
     <div class="row">
         @foreach ($accounts as $account)
             <div class="col-md-6 col-sm-12 mb-3">
-                <a href="#">
+                <a href="{{ route('master.account.show', $account->uuid) }}">
                     <div class="card">
                         <div class="card-body">
                             <div class="d-flex flex-row">
@@ -28,7 +28,7 @@
                                 </div>
                                 <div class="ms-3 align-self-center">
                                     <h4 class="mb-0 fs-5">Total {{ Str::title($account->name) }}</h4>
-                                    <span class="text-muted">{{ Str::title($account->name) }}</span>
+                                    <span class="text-muted">{{ Str::title($account->name) . ' (' . $account->type . ')' }}</span>
                                 </div>
                                 <div class="ms-auto align-self-center">
                                     <h2 class="fs-7 mb-0">{{ 'Rp. ' . indonesianCurrencyFormat($account->balance) }}</h2>

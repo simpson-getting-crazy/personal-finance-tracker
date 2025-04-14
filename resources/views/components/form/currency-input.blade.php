@@ -5,12 +5,8 @@
 <script type="text/javascript">
     var rupiah = document.getElementById('{{ $id }}');
 
-    @if (Str::contains(request()->route()->getName(), 'edit'))
-
-        (() => {
-            rupiah.value = formatRupiah(rupiah.value)
-        })
-
+    @if (!Str::contains(request()->route()->getName(), 'create'))
+        rupiah.value = formatRupiah(rupiah.value)
     @endif
 
     rupiah.addEventListener('keyup', function(e) {

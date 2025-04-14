@@ -18,8 +18,9 @@
     <div class="card">
         <div class="card-body">
             <h5 class="mb-3">Formulir Akun Keuangan</h5>
-            <form action="{{ route('master.account.store') }}" method="POST">
+            <form action="{{ $actionUrl ?? '#' }}" method="POST">
                 @csrf
+                @if ($action == 'update') @method('PUT') @endif
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
@@ -29,7 +30,8 @@
                                 id="name"
                                 name="name"
                                 placeholder="Masukkan Nama Akun"
-                                value="{{ old('name') }}"
+                                value="{{ old('name', @$account->name) }}"
+                                :disabled="$action == 'show'"
                                 required />
                             @error('name')
                                 <x:form.input-error :messages="$message" />
@@ -39,10 +41,10 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <x:form.input-label for="type" required>Tipe Akun</x:form.input-label>
-                            <x:form.select-input id="type" name="type" required>
+                            <x:form.select-input id="type" name="type" :disabled="$action == 'show'" required>
                                 <option value="" selected hidden>Pilih Tipe Akun</option>
                                 @foreach (['checking', 'savings', 'credit', 'investment'] as $type)
-                                    <option value="{{ $type }}" @selected(old('type') == $type)>{{ Str::title($type) }}</option>
+                                    <option value="{{ $type }}" @selected(old('type', @$account->type) == $type)>{{ Str::title($type) }}</option>
                                 @endforeach
                             </x:form.select-input>
                             @error('type')
@@ -58,7 +60,8 @@
                                 name="initial_balance"
                                 placeholder="Masukkan Nominal Saldo Awal"
                                 min="0"
-                                value="{{ old('initial_balance') }}"
+                                value="{{ old('initial_balance', @$account->initial_balance) }}"
+                                :disabled="$action == 'show'"
                                 required />
                             @error('initial_balance')
                                 <x:form.input-error :messages="$message" />
@@ -68,10 +71,10 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <x:form.input-label for="currency" required>Mata Uang</x:form.input-label>
-                            <x:form.select-input id="currency" name="currency" required>
+                            <x:form.select-input id="currency" name="currency" :disabled="$action == 'show'" required>
                                 <option value="" selected hidden>Pilih Mata Uang</option>
                                 @foreach (\App\Constants\Currency::COLLECTS as $currency)
-                                    <option value="{{ Str::lower($currency) }}" @selected(old('currency') == $currency)>{{ $currency }}</option>
+                                    <option value="{{ Str::lower($currency) }}" @selected(old('currency', @$account->currency) == Str::lower($currency))>{{ $currency }}</option>
                                 @endforeach
                             </x:form.select-input>
                             @error('currency')
@@ -86,7 +89,9 @@
                                 id="note"
                                 name="note"
                                 rows="3"
-                                value="{{ old('note') }}" />
+                                :disabled="$action == 'show'">
+                                {{ old('note', @$account->note) }}
+                            </x:form.textarea-input>
                             @error('note')
                                 <x:form.input-error :messages="$message" />
                             @enderror
@@ -95,7 +100,13 @@
                     <div class="col-12">
                         <div class="d-md-flex align-items-center">
                             <div class="ms-auto mt-3 mt-md-0">
-                                <button type="submit" class="btn btn-primary rounded-pill px-4">
+                                @if ($action != 'store')
+                                    <a href="{{ route('master.account.index') }}" class="btn btn-danger rounded-pill px-4 me-2">
+                                        <i class="ti ti-arrow-left me-2 fs-4"></i>
+                                        Kembali
+                                    </a>
+                                @endif
+                                <button type="submit" class="btn btn-primary rounded-pill px-4" {{ $action == 'show' ? 'disabled' : '' }}>
                                     <div class="d-flex align-items-center">
                                         <i class="ti ti-send me-2 fs-4"></i>
                                         Submit
@@ -166,15 +177,19 @@
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center gap-3"
-                                                            href="#"><i class="fs-4 ti ti-eye"></i>Detail</a>
+                                                            href="{{ route('master.account.show', $rowAccount->uuid) }}"><i class="fs-4 ti ti-eye"></i>Detail</a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item d-flex align-items-center gap-3"
-                                                            href="#"><i class="fs-4 ti ti-edit"></i>Edit</a>
+                                                            href="{{ route('master.account.edit', $rowAccount->uuid) }}"><i class="fs-4 ti ti-edit"></i>Edit</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item d-flex align-items-center gap-3"
-                                                            href="#"><i class="fs-4 ti ti-trash"></i>Delete</a>
+                                                        <a class="dropdown-item d-flex align-items-center gap-3 btn-delete"
+                                                            href="{{ route('master.account.destroy', $rowAccount->uuid) }}"
+                                                            data-redirect-url="{{ route('master.account.index') }}">
+                                                            <i class="fs-4 ti ti-trash"></i>
+                                                            Delete
+                                                        </a>
                                                     </li>
                                                 </ul>
                                             </div>

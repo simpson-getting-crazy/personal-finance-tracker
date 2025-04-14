@@ -24,6 +24,10 @@ Route::group([
             Route::get('/', [AccountController::class, 'index'])->name('index');
             Route::get('/create', [AccountController::class, 'create'])->name('create');
             Route::post('/store', [AccountController::class, 'store'])->name('store');
+            Route::get('/{uuid}/show', [AccountController::class, 'show'])->name('show');
+            Route::get('/{uuid}/edit', [AccountController::class, 'edit'])->name('edit');
+            Route::put('/{uuid}/update', [AccountController::class, 'update'])->name('update');
+            Route::delete('/{uuid}/destroy', [AccountController::class, 'destroy'])->name('destroy');
         });
 
     });
