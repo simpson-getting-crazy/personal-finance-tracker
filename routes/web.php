@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Master\AccountController;
+use App\Http\Controllers\Master\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -28,6 +29,19 @@ Route::group([
             Route::get('/{uuid}/edit', [AccountController::class, 'edit'])->name('edit');
             Route::put('/{uuid}/update', [AccountController::class, 'update'])->name('update');
             Route::delete('/{uuid}/destroy', [AccountController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::group([
+            'prefix' => 'category',
+            'as' => 'category.'
+        ], function () {
+            Route::get('/', [CategoryController::class, 'index'])->name('index');
+            Route::get('/create', [CategoryController::class, 'create'])->name('create');
+            Route::post('/store', [CategoryController::class, 'store'])->name('store');
+            Route::get('/{uuid}/show', [CategoryController::class, 'show'])->name('show');
+            Route::get('/{uuid}/edit', [CategoryController::class, 'edit'])->name('edit');
+            Route::put('/{uuid}/update', [CategoryController::class, 'update'])->name('update');
+            Route::delete('/{uuid}/destroy', [CategoryController::class, 'destroy'])->name('destroy');
         });
 
     });

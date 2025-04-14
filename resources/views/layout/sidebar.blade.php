@@ -63,15 +63,9 @@
                     </a>
                     <ul aria-expanded="false" class="collapse first-level">
                         <li class="sidebar-item">
-                            <a href="/" class="sidebar-link">
+                            <a href="{{ route('master.category.index') }}" class="sidebar-link">
                                 <span class="sidebar-icon"></span>
-                                <span class="hide-menu">Tambah Kategori</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a href="/" class="sidebar-link">
-                                <span class="sidebar-icon"></span>
-                                <span class="hide-menu">Semua Kategori</span>
+                                <span class="hide-menu">List Kategori</span>
                             </a>
                         </li>
                     </ul>
