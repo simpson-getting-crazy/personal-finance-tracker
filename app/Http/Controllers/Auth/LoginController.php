@@ -21,6 +21,6 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended()->with('success', 'Successfully Login!');
+        return redirect()->intended()->with('toastSuccess', 'Successfully Login!');
     }
 }

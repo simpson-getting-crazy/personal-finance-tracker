@@ -17,6 +17,6 @@ class LogoutController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('auth.login.form')->with('success', 'Logout Success!');
+        return redirect()->route('auth.login.form')->with('toastSuccess', 'Logout Success!');
     }
 }

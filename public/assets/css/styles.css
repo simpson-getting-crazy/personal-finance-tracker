@@ -28143,6 +28143,11 @@ body div:where(.swal2-icon).swal2-success [class^="swal2-success-line"] {
   z-index: -1;
 }
 
+body.preloader-active {
+    overflow: hidden !important;
+    height: 100vh !important;
+}
+
 .simplebar-track {
   z-index: 1;
   position: absolute;

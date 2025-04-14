@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Master\Account;
 
 use App\Constants\Currency;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -26,9 +27,9 @@ class CreateAccountRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'type' => ['required', 'in:checking,savings,credit,investment'],
-            'initial_balance' => ['required', 'regex:/^[,\d]+$/'],
-            'currency' => ['required', 'in:' . implode(',', Currency::COLLECTS)],
-            'note' => ['nullable', 'string']
+            'initial_balance' => ['required', 'regex:/^[.\d]+$/'],
+            'currency' => ['required', 'in:' . Str::lower(implode(',', Currency::COLLECTS))],
+            'note' => ['nullable']
         ];
     }
 
@@ -37,10 +38,11 @@ class CreateAccountRequest extends FormRequest
      *
      * @return array
      */
-    public function DTOs(): array
+    public function DTO(): array
     {
         $data = $this->validated();
-        $data['initial_balance'] = doubleval($data['initial_balance']);
+        $data['user_id'] = Auth::id();
+        $data['initial_balance'] = doubleval(str_replace('.', '', $data['initial_balance']));
         $data['balance'] = $data['initial_balance'];
 
         return $data;

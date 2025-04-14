@@ -16,6 +16,8 @@
     <title>Spike Bootstrap Admin</title>
     <!-- jvectormap  -->
     <link rel="stylesheet" href="{{ asset('assets/libs/jvectormap/jquery-jvectormap.css') }}">
+
+    <link href="https://rawcdn.githack.com/ferdinalaxewall/beautyToast/v1.0.0b/beautyToast.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -62,6 +64,70 @@
     <script src="{{ asset('assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
     <script src="{{ asset('assets/js/extra-libs/jvectormap/jquery-jvectormap-us-aea-en.js') }}"></script>
     <script src="{{ asset('assets/js/dashboards/dashboard.js') }}"></script>
+
+    <script src="https://rawcdn.githack.com/ferdinalaxewall/beautyToast/v1.0.0b/beautyToast.min.js"></script>
+
+    <script>
+        beautyToast.settings({
+            darkTheme: true,
+            iconWidth: 28,
+            iconHeight: 28,
+            iconSize: 28,
+            closeButton: true,
+            timeout: 3000,
+            animationTime: 180,
+        });
+
+        @if (Session::has('toastSuccess'))
+            beautyToast.success({
+                title: 'Berhasil!',
+                message: "{{ Session::get('toastSuccess') }}",
+                backgroundColor: '#1B2A41',
+                titleColor: '#01C38D',
+                messageColor: '#E1E6EF',
+                iconColor: '#01C38D',
+            });
+        @elseif (Session::has('toastError'))
+            beautyToast.error({
+                title: 'Error!',
+                message: "{{ Session::get('toastError') }}",
+                backgroundColor: '#1B2A41',
+                titleColor: '#FF5E5E',
+                messageColor: '#E1E6EF',
+                iconColor: '#FF5E5E'
+            });
+        @elseif (Session::has('toastWarning'))
+            beautyToast.warning({
+                title: 'Peringatan!',
+                message: "{{ Session::get('toastWarning') }}",
+                backgroundColor: '#1B2A41',
+                titleColor: '#FFC857',
+                messageColor: '#E1E6EF',
+                iconColor: '#FFC857'
+            });
+        @elseif (Session::has('toastInfo'))
+            beautyToast.info({
+                title: 'Info',
+                message: "{{ Session::get('toastInfo') }}",
+                backgroundColor: '#1B2A41',
+                titleColor: '#3ABEF9',
+                messageColor: '#E1E6EF',
+                iconColor: '#3ABEF9'
+            });
+        @endif
+    </script>
+    <script>
+        // Add preloader-active to body to hide scroll
+        document.body.classList.add('preloader-active');
+        window.addEventListener('load', function () {
+            // Hide preloader after page load
+            var preloader = document.querySelector('.preloader');
+            if (preloader) {
+                preloader.style.display = 'none';
+            }
+            document.body.classList.remove('preloader-active');
+        });
+    </script>
 </body>
 
 </html>

@@ -42,10 +42,10 @@
                             <x:form.select-input id="type" name="type" required>
                                 <option value="" selected hidden>Pilih Tipe Akun</option>
                                 @foreach (['checking', 'savings', 'credit', 'investment'] as $type)
-                                    <option value="{{ $type }}">{{ Str::title($type) }}</option>
+                                    <option value="{{ $type }}" @selected(old('type') == $type)>{{ Str::title($type) }}</option>
                                 @endforeach
                             </x:form.select-input>
-                            @error('name')
+                            @error('type')
                                 <x:form.input-error :messages="$message" />
                             @enderror
                         </div>
@@ -58,8 +58,9 @@
                                 name="initial_balance"
                                 placeholder="Masukkan Nominal Saldo Awal"
                                 min="0"
+                                value="{{ old('initial_balance') }}"
                                 required />
-                            @error('name')
+                            @error('initial_balance')
                                 <x:form.input-error :messages="$message" />
                             @enderror
                         </div>
@@ -70,10 +71,10 @@
                             <x:form.select-input id="currency" name="currency" required>
                                 <option value="" selected hidden>Pilih Mata Uang</option>
                                 @foreach (\App\Constants\Currency::COLLECTS as $currency)
-                                    <option value="{{ Str::lower($currency) }}">{{ $currency }}</option>
+                                    <option value="{{ Str::lower($currency) }}" @selected(old('currency') == $currency)>{{ $currency }}</option>
                                 @endforeach
                             </x:form.select-input>
-                            @error('name')
+                            @error('currency')
                                 <x:form.input-error :messages="$message" />
                             @enderror
                         </div>
@@ -86,7 +87,7 @@
                                 name="note"
                                 rows="3"
                                 value="{{ old('note') }}" />
-                            @error('name')
+                            @error('note')
                                 <x:form.input-error :messages="$message" />
                             @enderror
                         </div>
@@ -114,8 +115,8 @@
                 <div class="card-body">
                     <div class="d-md-flex justify-content-between mb-9">
                         <div class="mb-9 mb-md-0">
-                            <h5 class="card-title">Latest reviews</h5>
-                            <p class="card-subtitle mb-0">Reviewd received across all channels</p>
+                            <h5 class="card-title">Data Akun Keuangan</h5>
+                            <p class="card-subtitle mb-0">Daftar Akun Keuangan Anda</p>
                         </div>
                         <div class="d-flex align-items-center">
                             <form class="position-relative me-3 w-100">
@@ -124,122 +125,62 @@
                                 <i
                                     class="ti ti-search position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
                             </form>
-                            <div class="dropdown">
-                                <a href="#" class="btn border shadow-none px-3" id="dropdownMenuButton"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <i class="ti ti-dots-vertical fs-5"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-3" href="#"><i
-                                                class="fs-4 ti ti-plus"></i>Add</a>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                     </div>
                     <div class="table-responsive overflow-x-auto latest-reviews-table">
                         <table class="table mb-0 align-middle text-nowrap">
                             <thead class="text-dark fs-4">
                                 <tr>
-                                    <th class="ps-0">
-                                        #
-                                    </th>
-                                    <th>Products</th>
-                                    <th>Customer</th>
-                                    <th>Reviews</th>
-                                    <th>Status</th>
-                                    <th>Time</th>
+                                    <th>Nama Akun</th>
+                                    <th>Tipe Akun</th>
+                                    <th>Saldo Awal</th>
+                                    <th>Sisa Saldo</th>
+                                    <th>Mata Uang</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="ps-0">
-                                        <div class="form-check mb-0 flex-shrink-0">
-                                            <input class="form-check-input" type="checkbox" value=""
-                                                id="flexCheckDefault1">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center product text-truncate">
-                                            <img src="../assets/images/products/product-5.png"
-                                                class="img-fluid flex-shrink-0" width="60" height="60">
-                                            <div class="ms-3 product-title">
-                                                <h6 class="fs-4 mb-0 text-truncate-2">iPhone 13 pro
-                                                    max-Pacific Blue-128GB storage</h6>
+                                @foreach ($accounts as $rowAccount)
+                                    <tr>
+                                        <td>
+                                            <p class="mb-0">{{ $rowAccount->name }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0">{{ $rowAccount->type }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0">{{ 'Rp. ' . number_format($rowAccount->initial_balance, 0, ',', '.') }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0">{{ 'Rp. ' . number_format($rowAccount->balance, 0, ',', '.') }}</p>
+                                        </td>
+                                        <td>
+                                            <p class="mb-0">{{ Str::upper($rowAccount->currency) }}</p>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown dropstart">
+                                                <a href="#" class="text-muted " id="dropdownMenuButton"
+                                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="ti ti-dots-vertical fs-5"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center gap-3"
+                                                            href="#"><i class="fs-4 ti ti-eye"></i>Detail</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center gap-3"
+                                                            href="#"><i class="fs-4 ti ti-edit"></i>Edit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item d-flex align-items-center gap-3"
+                                                            href="#"><i class="fs-4 ti ti-trash"></i>Delete</a>
+                                                    </li>
+                                                </ul>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="d-flex align-items-center text-truncate">
-                                            <img src="../assets/images/profile/user-2.jpg" alt=""
-                                                class="img-fluid rounded-circle flex-shrink-0" width="32"
-                                                height="32">
-                                            <div class="ms-7">
-                                                <h5 class="mb-1 fs-4">Arlene McCoy</h5>
-                                                <h6 class="mb-0 fw-light">macoy@arlene.com</h6>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="product-reviews">
-                                            <ul class="list-unstyled d-flex align-items-center mb-0">
-                                                <li><a class="me-1 " href="javascript:void(0)"><iconify-icon
-                                                            icon="solar:star-bold" class="text-warning"></iconify-icon></a>
-                                                </li>
-                                                <li><a class="me-1 " href="javascript:void(0)"><iconify-icon
-                                                            icon="solar:star-bold" class="text-warning"></iconify-icon></a>
-                                                </li>
-                                                <li><a class="me-1 " href="javascript:void(0)"><iconify-icon
-                                                            icon="solar:star-bold" class="text-warning"></iconify-icon></a>
-                                                </li>
-                                                <li><a class="me-1 " href="javascript:void(0)"><iconify-icon
-                                                            icon="solar:star-bold-duotone"
-                                                            class="text-warning"></iconify-icon></a>
-                                                </li>
-                                                <li><a class="" href="javascript:void(0)"><iconify-icon
-                                                            icon="solar:star-line-duotone"
-                                                            class="text-warning"></iconify-icon></a>
-                                                </li>
-                                            </ul>
-                                            <p class="text-dark mb-0 fw-normal text-truncate-2">
-                                                This theme is great. Clean and easy to
-                                                understand. Perfect for those who don't have<br>
-                                                time to... <a href="#">See more</a>
-                                            </p>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="badge rounded-pill bg-success-subtle text-success border-success border">Confirmed</span>
-                                    </td>
-                                    <td>
-                                        <p class="mb-0">Nov 8</p>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown dropstart">
-                                            <a href="#" class="text-muted " id="dropdownMenuButton"
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="ti ti-dots-vertical fs-5"></i>
-                                            </a>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <li>
-                                                    <a class="dropdown-item d-flex align-items-center gap-3"
-                                                        href="#"><i class="fs-4 ti ti-plus"></i>Add</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item d-flex align-items-center gap-3"
-                                                        href="#"><i class="fs-4 ti ti-edit"></i>Edit</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item d-flex align-items-center gap-3"
-                                                        href="#"><i class="fs-4 ti ti-trash"></i>Delete</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

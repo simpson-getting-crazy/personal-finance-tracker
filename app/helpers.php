@@ -6,9 +6,6 @@ if (! function_exists('indonesianCurrencyFormat')) {
 
     function indonesianCurrencyFormat($nominal): string
     {
-        $nominal = str_replace('.', '', $nominal);
-        $nominal = (int) $nominal;
-
         $output = [];
 
         if ($nominal >= 1000000000) {

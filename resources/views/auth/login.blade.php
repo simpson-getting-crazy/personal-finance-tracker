@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/styles.css') }}" />
 
     <title>Spike Bootstrap Admin</title>
+
+    <link href="https://rawcdn.githack.com/ferdinalaxewall/beautyToast/v1.0.0b/beautyToast.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -58,16 +60,39 @@
         <div class="dark-transparent sidebartoggler"></div>
     </div>
     <!-- Import Js Files -->
-    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.min.js"></script>
-    <script src="../assets/js/theme/app.dark.init.js"></script>
-    <script src="../assets/js/theme/theme.js"></script>
-    <script src="../assets/js/theme/app.min.js"></script>
-    <script src="../assets/js/theme/sidebarmenu.js"></script>
-    <script src="../assets/js/theme/feather.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="{{ asset('assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/libs/simplebar/dist/simplebar.min.js') }}"></script>
+    <script src="{{ asset('assets/js/theme/app.dark.init.js') }}"></script>
+    <script src="{{ asset('assets/js/theme/theme.js') }}"></script>
+    <script src="{{ asset('assets/js/theme/app.min.js') }}"></script>
+    <script src="{{ asset('assets/js/theme/sidebarmenu.js') }}"></script>
+    <script src="{{ asset('assets/js/theme/feather.min.js') }}"></script>
 
     <!-- solar icons -->
     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+
+    <script src="https://rawcdn.githack.com/ferdinalaxewall/beautyToast/v1.0.0b/beautyToast.min.js"></script>
+
+    <script>
+        @if (Session::has('toastSuccess'))
+            beautyToast.success({
+                title: 'Berhasil!',
+                message: 'Data telah disimpan dengan sukses.',
+                darkTheme: true,
+                iconWidth: 28,
+                iconHeight: 28,
+                iconSize: 28,
+                closeButton: true,
+                timeout: 3000,
+                animationTime: 180,
+                backgroundColor: '#1B2A41',
+                titleColor: '#01C38D',
+                messageColor: '#E1E6EF',
+                iconColor: '#01C38D',
+            });
+        @endif
+    </script>
 </body>
 
 </html>
